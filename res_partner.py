@@ -28,8 +28,24 @@ print(partner_ids_from)
 
 for partner_id in partner_ids_from:
     print(partner_id)
-    from_partner = modelsFrom.execute_kw(dbFrom, uidFrom, pwdFrom, 'res.partner', 'read', [partner_id], {'fields': ['name', 'country_id']})
+    from_partner = modelsFrom.execute_kw(dbFrom, uidFrom, pwdFrom, 'res.partner', 'read', [partner_id], {'fields': ['name', 'street', 'street', 'city', 'state_id', 'country_id']})
+    
+    if from_partner['state_id']:
+        country_id = modelsFrom.execute_kw(dbFrom, uidFrom, pwdFrom, 'res.country.state', 'search', [[['id', '=', from_partner['state_id']]]], {'limit': 1})
+    else:
+        country_id = False
+
+    if from_partner['country_id']:
+        country_id = modelsFrom.execute_kw(dbFrom, uidFrom, pwdFrom, 'res.country', 'search', [[['id', '=', from_partner['country_id']]]], {'limit': 1})
+    else:
+        country_id = False
+    
     to_partner = modelsTo.execute_kw(dbTo, uidTo, pwdTo, 'res.partner', 'create', [{
-        'name': from_partner['name']
+        'name': from_partner['name'],
+        'street': from_partner['street'],
+        'street2': from_partner['street2'],
+        'city': from_partner['city'],
+        'state_id': state_id[0],
+        'country_id': country_id[0]
     }])
     print(to_partner)
