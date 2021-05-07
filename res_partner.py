@@ -31,9 +31,9 @@ for partner_id in partner_ids_from:
     from_partner = modelsFrom.execute_kw(dbFrom, uidFrom, pwdFrom, 'res.partner', 'read', [partner_id], {'fields': ['name', 'street', 'street', 'city', 'state_id', 'country_id']})
     
     if from_partner['state_id']:
-        country_id = modelsFrom.execute_kw(dbFrom, uidFrom, pwdFrom, 'res.country.state', 'search', [[['id', '=', from_partner['state_id']]]], {'limit': 1})
+        state_id = modelsFrom.execute_kw(dbFrom, uidFrom, pwdFrom, 'res.country.state', 'search', [[['id', '=', from_partner['state_id']]]], {'limit': 1})
     else:
-        country_id = False
+        state_id = False
 
     if from_partner['country_id']:
         country_id = modelsFrom.execute_kw(dbFrom, uidFrom, pwdFrom, 'res.country', 'search', [[['id', '=', from_partner['country_id']]]], {'limit': 1})
