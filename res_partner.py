@@ -12,6 +12,8 @@ pwdTo = 'admin'                         # Odoo To password
 dbTo = 'odoo'                           # Odoo To base de datos
 urlTo = 'http://localhost:8069'         # Odoo To URL
 
+valsFrom = {'fields': ['name', 'street', 'street', 'city', 'state_id', 'country_id']}
+
 commonFrom = xmlrpclib.ServerProxy('{}/xmlrpc/2/common'.format(urlFrom))
 commonFrom.version()
 uidFrom = commonFrom.authenticate(dbFrom, usernameFrom, pwdFrom, {})
@@ -28,7 +30,7 @@ print(partner_ids_from)
 
 for partner_id in partner_ids_from:
     print(partner_id)
-    from_partner = modelsFrom.execute_kw(dbFrom, uidFrom, pwdFrom, 'res.partner', 'read', [partner_id], {'fields': ['name', 'street', 'street', 'city', 'state_id', 'country_id']})
+    from_partner = modelsFrom.execute_kw(dbFrom, uidFrom, pwdFrom, 'res.partner', 'read', [partner_id], valsFrom)
     
     if from_partner['state_id']:
         state_id = modelsFrom.execute_kw(dbFrom, uidFrom, pwdFrom, 'res.country.state', 'search', [[['id', '=', from_partner['state_id']]]], {'limit': 1})
