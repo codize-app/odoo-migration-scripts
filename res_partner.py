@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# encoding: utf-8
 
 import xmlrpclib
 
@@ -31,17 +32,19 @@ print(partner_ids_from)
 for partner_id in partner_ids_from:
     print(partner_id)
     from_partner = modelsFrom.execute_kw(dbFrom, uidFrom, pwdFrom, 'res.partner', 'read', [partner_id], valsFrom)
-    
-    if from_partner['state_id']:
-        state_id = modelsFrom.execute_kw(dbFrom, uidFrom, pwdFrom, 'res.country.state', 'search', [[['id', '=', from_partner['state_id']]]], {'limit': 1})
+
+    print(from_partner[0])
+
+    if from_partner[0]['state_id']:
+        state_id = modelsTo.execute_kw(dbTo, uidTo, pwdTo, 'res.country.state', 'search', [[['name', '=', from_partner[0]['state_id'][1]]]], {'limit': 1})
     else:
         state_id = False
 
-    if from_partner['country_id']:
-        country_id = modelsFrom.execute_kw(dbFrom, uidFrom, pwdFrom, 'res.country', 'search', [[['id', '=', from_partner['country_id']]]], {'limit': 1})
+    if from_partner[0]['country_id']:
+        country_id = modelsTo.execute_kw(dbTo, uidTo, pwdTo, 'res.country', 'search', [[['name', '=', from_partner[0]['country_id'][1]]]], {'limit': 1})
     else:
         country_id = False
-    
+
     to_partner = modelsTo.execute_kw(dbTo, uidTo, pwdTo, 'res.partner', 'create', [{
         'name': from_partner['name'],
         'street': from_partner['street'],
