@@ -13,7 +13,7 @@ pwdTo = 'admin'                         # Odoo To password
 dbTo = 'odoo'                           # Odoo To base de datos
 urlTo = 'http://localhost:8069'         # Odoo To URL
 
-valsFrom = {'fields': ['name', 'street', 'street', 'city', 'state_id', 'country_id']}
+valsFrom = {'fields': ['name', 'street', 'street', 'city', 'state_id', 'country_id', 'phone', 'mobile', 'email']}
 
 commonFrom = xmlrpclib.ServerProxy('{}/xmlrpc/2/common'.format(urlFrom))
 commonFrom.version()
@@ -37,11 +37,13 @@ for partner_id in partner_ids_from:
 
     if from_partner[0]['state_id']:
         state_id = modelsTo.execute_kw(dbTo, uidTo, pwdTo, 'res.country.state', 'search', [[['name', '=', from_partner[0]['state_id'][1]]]], {'limit': 1})
+        state_id = state_id[0]
     else:
         state_id = False
 
     if from_partner[0]['country_id']:
         country_id = modelsTo.execute_kw(dbTo, uidTo, pwdTo, 'res.country', 'search', [[['name', '=', from_partner[0]['country_id'][1]]]], {'limit': 1})
+        country_id = country_id[0]
     else:
         country_id = False
 
@@ -50,7 +52,10 @@ for partner_id in partner_ids_from:
         'street': from_partner['street'],
         'street2': from_partner['street2'],
         'city': from_partner['city'],
-        'state_id': state_id[0],
-        'country_id': country_id[0]
+        'state_id': state_id,
+        'country_id': country_id,
+        'phone': from_partner[0]['phone'],
+        'mobile': from_partner[0]['mobile'],
+        'email': from_partner[0]['email'],
     }])
     print(to_partner)
