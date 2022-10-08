@@ -13,7 +13,7 @@ pwdTo = 'admin'                         # Odoo To password
 dbTo = 'odoo'                           # Odoo To base de datos
 urlTo = 'http://localhost:8069'         # Odoo To URL
 
-model = ''                              # Modelo de Odoo a migrar
+model = 'sale.order'                              # Modelo de Odoo a migrar
 
 valsFrom = {'fields': ['partner_id', 'order_line', 'date_order']}
 
