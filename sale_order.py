@@ -4,13 +4,13 @@
 import xmlrpclib
 
 usernameFrom = 'admin'                  # Odoo From user
-pwdFrom = 'cod2001'                       # Odoo From password
+pwdFrom = 'admin'                       # Odoo From password
 dbFrom = 'odoo'                         # Odoo From base de datos
-urlFrom = 'https://www.codize.ar'       # Odoo From URL
+urlFrom = 'http://localhost:8069'       # Odoo From URL
 
 usernameTo = 'admin'                    # Odoo To user
-pwdTo = 'cod2001'                         # Odoo To password
-dbTo = 'odoo16_migration'                           # Odoo To base de datos
+pwdTo = 'admin'                         # Odoo To password
+dbTo = 'odoo'                           # Odoo To base de datos
 urlTo = 'http://localhost:8069'         # Odoo To URL
 
 model = 'sale.order'                              # Modelo de Odoo a migrar
