@@ -15,7 +15,7 @@ urlTo = 'http://localhost:8069'         # Odoo To URL
 
 model = 'blog.post'                     # Modelo de Odoo a migrar
 
-valsFrom = {'fields': ['blog_id', 'name', 'subtitle', 'author_id', 'create_date', 'post_date', 'published_date', 'write_date', 'tag_ids']}
+valsFrom = {'fields': ['blog_id', 'visits', 'name', 'subtitle', 'author_id', 'create_date', 'post_date', 'published_date', 'write_date', 'tag_ids']}
 
 commonFrom = xmlrpclib.ServerProxy('{}/xmlrpc/2/common'.format(urlFrom))
 commonFrom.version()
@@ -27,7 +27,7 @@ uidTo = commonTo.authenticate(dbTo, usernameTo, pwdTo, {})
 
 modelsFrom = xmlrpclib.ServerProxy('{}/xmlrpc/2/object'.format(urlFrom))
 modelsTo = xmlrpclib.ServerProxy('{}/xmlrpc/2/object'.format(urlTo))
-ids_from = modelsFrom.execute_kw(dbFrom, uidFrom, pwdFrom, model, 'search', [[]])   # Ajustar dominio de búsqueda de acuerdo a las necesidades
+ids_from = modelsFrom.execute_kw(dbFrom, uidFrom, pwdFrom, model, 'search', [[]], {'order': 'id asc'})   # Ajustar dominio de búsqueda de acuerdo a las necesidades
 
 print(ids_from)
 
@@ -52,6 +52,7 @@ for id_from in ids_from:
     to_id = modelsTo.execute_kw(dbTo, uidTo, pwdTo, model, 'create', [{
         'blog_id': blog_id_to,
         'name': from_id[0]['name'],
+        'visits': from_id[0]['visits'],
         'subject': from_id[0]['subject'],
         'author_id': author_id_to,
         'create_date': from_id[0]['create_date'],
