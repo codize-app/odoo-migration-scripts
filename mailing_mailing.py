@@ -42,7 +42,25 @@ for mail in mailing_ids_from:
     }])
     mailings =  modelsFrom.execute_kw(dbFrom, uidFrom, pwdFrom, 'mailing.trace', 'search', [[('mass_mailing_id', '=', mail)]])
     for mass_mail in mailings:
+        # Versión 14 o anteriores
         prev_mail = modelsFrom.execute_kw(dbFrom, uidFrom, pwdFrom, 'mailing.trace', 'read', [mass_mail], {'fields': ['email', 'sent', 'opened', 'clicked', 'message_id', 'res_id', 'state']})
+        # Versión 15 o posteriores
+        #prev_mail = modelsFrom.execute_kw(dbFrom, uidFrom, pwdFrom, 'mailing.trace', 'read', [mass_mail], {'fields': ['email', 'sent_datetime', 'open_datetime', 'inks_click_datetime', 'message_id', 'res_id', 'trace_status']})
+        
+        # Versión 14 o anteriores
+        #new_mail = modelsTo.execute_kw(dbTo, uidTo, pwdTo, 'mailing.trace', 'create', [{
+        #    'email': prev_mail[0]['email'],
+        #    'sent': prev_mail[0]['sent'],
+        #    'opened': prev_mail[0]['opened'],
+        #    'clicked': prev_mail[0]['clicked'],
+        #    'mass_mailing_id': to_mail,
+        #    'message_id': prev_mail[0]['message_id'],
+        #    'model': 'mailing.contact',
+        #    'trace_type': 'mail',
+        #    'res_id': prev_mail[0]['res_id'],
+        #    'state': prev_mail[0]['state']
+        #}])
+        # Versión 15 o posteriores
         new_mail = modelsTo.execute_kw(dbTo, uidTo, pwdTo, 'mailing.trace', 'create', [{
             'email': prev_mail[0]['email'],
             'sent_datetime': prev_mail[0]['sent'],
@@ -53,5 +71,5 @@ for mail in mailing_ids_from:
             'model': 'mailing.contact',
             'trace_type': 'mail',
             'res_id': prev_mail[0]['res_id'],
-            'trace_status': prev_mail[0]['state'].replace('opened', 'open').replace('ignored', 'sent') # En odoo 16 state se llama trace_status y tiene valores distintos, ajustar a cada necesidad
+            'trace_status': prev_mail[0]['state'].replace('opened', 'open').replace('ignored', 'sent') # En odoo 15+ state se llama trace_status y tiene valores distintos, ajustar a cada necesidad si hace falta
         }])
